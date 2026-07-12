@@ -45,7 +45,11 @@ class User(Base):
         # default= lambda: datetime.now(UTC)
     )
 
-    role: Mapped[UserRole] 
+    role: Mapped[UserRole] = mapped_column(
+        SQLEnum(UserRole),
+        default=UserRole.USER,
+        nullable=False
+    ) 
     documents = relationship("Document",back_populates="user",cascade="all, delete-orphan")
-    conversation = relationship("Conversation",back_populates="user",cascade="all, delete-orphan")
+    conversations = relationship("Conversation",back_populates="user",cascade="all, delete-orphan")
 

@@ -4,7 +4,7 @@ from database.database import engine
 
 from models.user import User
 from models.document import Document
-from models.conversation import Converstaion
+from models.conversation import Conversation
 from models.message import Message 
 
 def init_database():

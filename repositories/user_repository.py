@@ -1,5 +1,9 @@
 from sqlalchemy.orm import Session
 
+import models.document
+import models.conversation
+import models.message
+
 from models.user import User
 
 class UserRepository:
@@ -12,7 +16,7 @@ class UserRepository:
         return user
 
      @staticmethod
-     def get_by_email(db: Session, email: str):
+     def get_user_by_email(db: Session, email: str):
         return (
             db.query(User)
             .filter(User.email == email)
@@ -20,7 +24,7 @@ class UserRepository:
         )
 
      @staticmethod
-     def get_by_username(db: Session, username: str):
+     def get_user_by_username(db: Session, username: str):
         return (
             db.query(User)
             .filter(User.username == username)
@@ -28,7 +32,7 @@ class UserRepository:
         )
 
      @staticmethod
-     def get_by_id(db: Session, user_id: int):
+     def get_user_by_id(db: Session, user_id: int):
         return (
             db.query(User)
             .filter(User.id == user_id)

@@ -5,7 +5,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database.base import Base
 
-class Converstaion(Base):
+class Conversation(Base):
 
     __tablename__ = "conversations"
 
@@ -39,4 +39,4 @@ class Converstaion(Base):
     # Relationship with User
     user = relationship("User",back_populates="conversations")
     # Relationship with Messages
-    user = relationship("Message",back_populates="conversation",cascade="all, delete-orphan")
+    messages = relationship("Message",back_populates="conversation",cascade="all, delete-orphan")
