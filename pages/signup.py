@@ -29,7 +29,10 @@
 
 
 
+
+
 import streamlit as st
+import time
 
 from database.database import SessionLocal
 from services.auth_service import AuthService
@@ -75,18 +78,22 @@ with st.form("signup_form"):
     submitted = st.form_submit_button("Sign Up", use_container_width=True)
 
 if submitted:
-    if not username or not email or not password:
+    if not username or not email or not password or not confirm_password:
         st.error("Please fill in all fields.")
     elif password != confirm_password:
         st.error("Passwords do not match.")
     else:
+        username = username.strip()
+        email = email.strip().lower()
         db = SessionLocal()
         try:
-            AuthService.register_user(db, username, email, password)
+            with st.spinner("Creating account..."):
+                AuthService.register_user(db, username, email, password)
             st.success("Account created successfully!")
-            st.info("You can now log in with your new account.")
-        except ValueError as e:
-            st.error(str(e))
+            time.sleep(1)
+            st.switch_page("pages/dashboard.py")
+        except Exception:
+            st.error("Something went wrong. Please try again.")
         finally:
             db.close()
 

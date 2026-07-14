@@ -1,8 +1,14 @@
+import re
+
+# from email_validator import validate_email, EmailNotValidError
+
 from sqlalchemy.orm import Session
 
 from authentication.password import PasswordManager
 from models.user import User
 from repositories.user_repository import UserRepository
+
+
 
 class AuthService:
 

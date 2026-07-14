@@ -1,59 +1,9 @@
-# import streamlit as st
-
-# from authentication.session_manager import SessionManager
-
-# st.set_page_config(
-#     page_title="AI Document Intelligence Assistant",
-#     page_icon="📚",
-#     layout="wide"
-# )
-
-
-# def main():
-#     st.title("AI Document Intelligence Assistant")
-
-#     if SessionManager.is_authenticated():
-#         st.success("You are logged in")
-
-#         user_id = SessionManager.get_current_user_id()
-
-#         st.write(f"Logged in user id :{user_id}")
-
-#         if st.button("Logout"):
-#             SessionManager.logout()
-#             st.rerun()
-
-#     else:
-#         st.write("""
-#         Welcome to your AI-powered document assistant.
-
-#         Upload documents, ask questions,
-#         and get answers using RAG.
-#                  """)   
-
-#         col1 , col2 = st.columns(2)
-
-#         with col1:
-#             if st.button("Login"):
-
-#                 st.switch_page("pages/login.py")    
-
-#         with col2:
-#             if st.button("Create Account"):
-
-#                 st.switch_page("pages/signup.py")     
-
-# if __name__ == "__main__":
-#     main()
-
-
-
-
-
 
 import streamlit as st
 
 from authentication.session_manager import SessionManager
+from repositories.user_repository import UserRepository
+from database.database import SessionLocal
 
 st.set_page_config(
     page_title="AI Document Intelligence Assistant",
@@ -102,19 +52,28 @@ def render_header():
     )
 
 
-def render_authenticated_view():
-    user_id = SessionManager.get_current_user_id()
+# def render_authenticated_view():
+#     db = SessionLocal()
+#     try:
+#         user_id = SessionManager.get_current_user_id()
+#         user = UserRepository.get_user_by_id(db, user_id)
+#         st.markdown(
+#             f'<div class="status-badge">Welcome, <b>{user.username}</b></    div>',
+#             unsafe_allow_html=True,
+#         )
 
-    st.markdown(
-        f'<div class="status-badge">Logged in as <b>{user_id}</b></div>',
-        unsafe_allow_html=True,
-    )
+#         st.markdown(
+#             f'<div class="status-badge">Logged in as <b>{user_id}</b></    div>',
+#             unsafe_allow_html=True,
+#         )
 
-    _, center, _ = st.columns([1, 1, 1])
-    with center:
-        if st.button("Logout", use_container_width=True):
-            SessionManager.logout()
-            st.rerun()
+#         _, center, _ = st.columns([1, 1, 1])
+#         with center:
+#             if st.button("Logout", use_container_width=True):
+#                 SessionManager.logout()
+#                 st.rerun()
+#     finally:
+#         db.close()            
 
 
 def render_guest_view():
@@ -133,10 +92,10 @@ def render_guest_view():
 def main():
     render_header()
 
-    if SessionManager.is_authenticated():
-        render_authenticated_view()
-    else:
-        render_guest_view()
+    # if SessionManager.is_authenticated():
+    #     render_authenticated_view()
+    # else:
+    render_guest_view()
 
 
 if __name__ == "__main__":
