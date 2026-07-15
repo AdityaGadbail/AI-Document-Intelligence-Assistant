@@ -4,7 +4,7 @@ DATABASE_URL = "sqlite:///storage/app.db"
 
 engine = create_engine(
     DATABASE_URL,
-    echo = True
+    echo = False
 )
 
 SessionLocal = sessionmaker(

@@ -1,210 +1,3 @@
-
-# import streamlit as st
-
-# from utils.auth_guard import require_login
-# from database.database import SessionLocal
-# from authentication.session_manager import SessionManager
-# from repositories.user_repository import UserRepository
-
-# require_login()
-
-# db = SessionLocal()
-
-# user = UserRepository.get_user_by_id(db,SessionManager.get_current_user_id())
-
-
-
-
-# DASHBOARD_CSS = """
-# <style>
-
-# .main .block-container{
-#     padding-top:2rem;
-#     padding-bottom:2rem;
-# }
-
-# .metric-card{
-#     background:#ffffff;
-#     border:1px solid #e5e7eb;
-#     border-radius:14px;
-#     padding:18px;
-#     text-align:center;
-#     box-shadow:0 2px 8px rgba(0,0,0,.05);
-# }
-
-# .metric-title{
-#     font-size:15px;
-#     color:#6b7280;
-# }
-
-# .metric-value{
-#     font-size:32px;
-#     font-weight:700;
-#     margin-top:8px;
-# }
-
-# .action-card{
-#     background:#ffffff;
-#     border:1px solid #e5e7eb;
-#     border-radius:14px;
-#     padding:22px;
-#     min-height:170px;
-#     box-shadow:0 2px 8px rgba(0,0,0,.05);
-# }
-
-# .action-title{
-#     font-size:22px;
-#     font-weight:700;
-# }
-
-# .action-desc{
-#     color:#6b7280;
-#     margin-top:10px;
-# }
-
-# </style>
-# """
-
-# st.markdown(DASHBOARD_CSS, unsafe_allow_html=True)
-
-
-
-# st.title("AI Document Intelligence Assistant")
-
-# st.write(
-#     f"### Welcome back, {user.username}"
-# )
-
-# st.caption(
-#     "Manage your documents and chat with AI."
-# )
-
-
-
-# col1, col2, col3, col4 = st.columns(4)
-# col1.metric("Documents", 0)
-
-# col2.metric("Chats", 0)
-
-# col3.metric("Messages", 0)
-
-# col4.metric("Storage", "0 MB")
-
-# st.write("")
-# st.subheader("Quick Actions")
-
-# row1col1, row1col2 = st.columns(2)
-
-# row2col1, row2col2 = st.columns(2)
-
-# with row1col1:
-
-#     st.markdown("""
-#     <div class="action-card">
-
-#     <div class="action-title">
-#     📄 Upload Documents
-#     </div>
-
-#     <div class="action-desc">
-#     Upload PDFs and prepare them for AI-powered search and chat.
-#     </div>
-
-#     </div>
-#     """, unsafe_allow_html=True)
-
-#     if st.button(
-#         "Open Upload",
-#         use_container_width=True,
-#         key="upload"
-#     ):
-#         st.switch_page("pages/upload.py")
-
-
-
-# with row1col2:
-
-#     st.markdown("""
-#     <div class="action-card">
-
-#     <div class="action-title">
-#     📂 My Documents
-#     </div>
-
-#     <div class="action-desc">
-#     Browse, manage and delete uploaded documents.
-#     </div>
-
-#     </div>
-#     """, unsafe_allow_html=True)
-
-#     st.button(
-#         "Open Documents",
-#         use_container_width=True,
-#         key="docs"
-#     )
-
-
-
-# with row2col1:
-
-#     st.markdown("""
-#     <div class="action-card">
-
-#     <div class="action-title">
-#     💬 Chat Assistant
-#     </div>
-
-#     <div class="action-desc">
-#     Ask questions and receive answers grounded in your uploaded PDFs.
-#     </div>
-
-#     </div>
-#     """, unsafe_allow_html=True)
-
-#     st.button(
-#         "Open Chat",
-#         use_container_width=True,
-#         key="chat"
-#     )
-
-
-# with row2col2:
-
-#     st.markdown("""
-#     <div class="action-card">
-
-#     <div class="action-title">
-#     📊 Analytics
-#     </div>
-
-#     <div class="action-desc">
-#     View document usage, conversations and system statistics.
-#     </div>
-
-#     </div>
-#     """, unsafe_allow_html=True)
-
-#     st.button(
-#         "Open Analytics",
-#         use_container_width=True,
-#         key="analytics"
-#     )
-
-
-# st.divider()
-
-# if st.button(
-#     "🚪 Logout",
-#     use_container_width=True
-# ):
-#     SessionManager.logout()
-#     st.switch_page("app.py")
-
-
-# db.close()    
-
-
 import streamlit as st
 
 from utils.auth_guard import require_login
@@ -228,13 +21,11 @@ st.set_page_config(
 # ----------------------------------------------------------------------------
 # Design tokens & global styles
 # ----------------------------------------------------------------------------
-# Paper #F7F8FA · Surface #FFFFFF · Border #E6E8EE · Ink #14181F · Slate #5B6472
-# Cobalt #2F5DE3 (accent) · Cobalt-Soft #EEF2FE · Green #1F9D6C (positive delta)
-# Display: Space Grotesk · Body: Inter · Numeric: JetBrains Mono
 
 DASHBOARD_CSS = """
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
     :root {
@@ -291,8 +82,8 @@ DASHBOARD_CSS = """
         font-size: 1.05rem;
     }
     .app-subtitle { color: var(--slate); font-size: 0.96rem; margin: 0.35rem 0 0 44px; }
-    .header-welcome { text-align: right; color: var(--slate); font-size: 0.85rem; padding-top: 6px; }
-    .header-welcome b { color: var(--ink); font-weight: 600; }
+    .header-welcome { text-align: right; color: var(--slate); font-size: 1.05rem; padding-top: 6px; }
+    .header-welcome b { color: var(--ink); font-weight: 700; font-size: 1.2rem; }
 
     /* ---- Metric cards ---------------------------------------------- */
     .metric-card {
@@ -325,15 +116,52 @@ DASHBOARD_CSS = """
     .action-title { font-size: 22px; font-weight: 700; color: var(--ink); }
     .action-desc { color: var(--slate); margin-top: 10px; }
 
-    /* Streamlit buttons matched to the card language */
+
+/* Default buttons (Upload / Documents / Chat / Analytics) */
     div.stButton > button {
         border-radius: 10px;
-        border: 1px solid var(--border);
-        background: var(--surface);
-        color: var(--ink);
+        border: 1px solid #14181F;
+        background: #14181F;
+        color: #FFFFFF;
         font-weight: 500;
     }
-    div.stButton > button:hover { border-color: var(--cobalt); color: var(--cobalt); }
+    div.stButton > button:hover {
+        border-color: var(--cobalt);
+        background: var(--cobalt);
+        color: #FFFFFF;
+    }
+    div.stButton > button p {
+        color: #FFFFFF;
+    }
+
+    /* Logout button only — scoped, doesn't affect other buttons */
+    .st-key-logout_wrap {
+        display: flex;
+        justify-content: flex-end;
+    }
+    .st-key-logout_wrap button {
+        border-radius: 8px;
+        border: 1px solid #14181F;
+        background: #14181F;
+        color: #FFFFFF;
+        font-weight: 600;
+        padding: 0.35rem 1.2rem;
+    }
+    .st-key-logout_wrap button:hover {
+        background: var(--cobalt);
+        border-color: var(--cobalt);
+        color: #FFFFFF;
+    }
+    .st-key-logout_wrap button p {
+        color: #FFFFFF;
+    }
+
+    /* Icon styling inside cards */
+    .app-title .mark i { color: #FFFFFF; font-size: 1rem; }
+    .action-title i { color: var(--cobalt); margin-right: 8px; }
+
+
+
 
     /* ---- Activity list --------------------------------------------- */
     .activity-card {
@@ -358,6 +186,8 @@ DASHBOARD_CSS = """
     .activity-meta { font-size: 0.78rem; color: var(--slate); margin-top: 1px; }
     .activity-time { font-size: 0.78rem; color: var(--slate); white-space: nowrap; }
     .activity-empty { text-align: center; color: var(--slate); font-size: 0.88rem; padding: 2.2rem 0; }
+
+    
 </style>
 """
 
@@ -366,22 +196,25 @@ st.markdown(DASHBOARD_CSS, unsafe_allow_html=True)
 # ----------------------------------------------------------------------------
 # 1. Header
 # ----------------------------------------------------------------------------
-header_left, header_right = st.columns([3, 1])
-
+header_left,header_right = st.columns(2)
 with header_left:
     st.markdown(
         """
-        <div class="app-title"><span class="mark">📄</span> AI Document Intelligence Assistant</div>
+        <div class="app-title"><i class="fa-solid fa-file-shield"></i> AI Document Intelligence Assistant</div>
         <p class="app-subtitle">Manage your documents and chat with AI.</p>
         """,
         unsafe_allow_html=True,
     )
 
 with header_right:
+    with st.container(key="logout_wrap"):
+        if st.button("Logout", key="logout"):
+            SessionManager.logout()
+            st.switch_page("app.py")
     st.markdown(
         f"""
         <div class="header-welcome">
-            Welcome back, <b>{user.username}</b><br>Here's what's happening today.
+            Welcome back, <b>{user.username}</b>
         </div>
         """,
         unsafe_allow_html=True,
@@ -442,7 +275,7 @@ with row1col1:
     st.markdown(
         """
         <div class="action-card">
-        <div class="action-title">📄 Upload Documents</div>
+        <div class="action-title"><i class="fa-solid fa-cloud-arrow-up"></i>Upload Documents</div>
         <div class="action-desc">Upload PDFs and prepare them for AI-powered search and chat.</div>
         </div>
         """,
@@ -455,7 +288,7 @@ with row1col2:
     st.markdown(
         """
         <div class="action-card">
-        <div class="action-title">📂 My Documents</div>
+        <div class="action-title"><i class="fa-solid fa-folder-open"></i>My Documents</div>
         <div class="action-desc">Browse, manage and delete uploaded documents.</div>
         </div>
         """,
@@ -468,7 +301,7 @@ with row2col1:
     st.markdown(
         """
         <div class="action-card">
-        <div class="action-title">💬 Chat Assistant</div>
+<div class="action-title"><i class="fa-solid fa-comments"></i>Chat Assistant</div>
         <div class="action-desc">Ask questions and receive answers grounded in your uploaded PDFs.</div>
         </div>
         """,
@@ -481,7 +314,7 @@ with row2col2:
     st.markdown(
         """
         <div class="action-card">
-        <div class="action-title">📊 Analytics</div>
+<div class="action-title"><i class="fa-solid fa-chart-line"></i>Analytics</div>
         <div class="action-desc">View document usage, conversations and system statistics.</div>
         </div>
         """,
@@ -496,8 +329,7 @@ with row2col2:
 st.write("")
 st.markdown('<div class="kicker"><span class="dot"></span>Recent Activity</div>', unsafe_allow_html=True)
 
-# TODO: replace with a real feed, e.g.:
-# recent_activity = ActivityRepository.get_recent(db, user.id, limit=5)
+
 recent_activity = []
 
 if recent_activity:
@@ -520,13 +352,5 @@ else:
         unsafe_allow_html=True,
     )
 
-# ----------------------------------------------------------------------------
-# 5. Footer
-# ----------------------------------------------------------------------------
-st.divider()
-
-if st.button("🚪 Logout", use_container_width=True):
-    SessionManager.logout()
-    st.switch_page("app.py")
 
 db.close()

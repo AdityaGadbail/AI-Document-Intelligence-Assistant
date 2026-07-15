@@ -66,6 +66,12 @@ class Document(Base):
         default = False,
         nullable = False
     )
+    
+    mime_type: Mapped[str] = mapped_column(
+    String(100),
+    nullable=False
+)
+
 
     user = relationship("User",back_populates="documents")
 
