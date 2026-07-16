@@ -1,81 +1,202 @@
-# import streamlit as st
-
-# from database.database import SessionLocal 
-
-# from services.auth_service import AuthService
-
-
-# st.title("Create Account")
-
-
-# username = st.text_input("Username")
-# email = st.text_input("Email")
-# password = st.text_input("Password")
-
-# if st.button("Sign Up"):
-#     db = SessionLocal()
-
-#     try:
-#         AuthService.register_user(db,username,email,password)
-
-#         st.success("Account created successfully!")
-#         st.info("Go to login page.")
-
-#     except ValueError as e:
-#         st.error(e)
-
-#     finally:
-#         db.close()    
-
-
-
-
-
 import streamlit as st
 import time
 
 from database.database import SessionLocal
-from services.auth_service import AuthService
-
-st.set_page_config(page_title="Create Account", page_icon="📚")
+from authentication.session_manager import SessionManager
+from services.auth.auth_service import AuthService
+st.set_page_config(
+    page_title="Create Account",
+    initial_sidebar_state="collapsed",
+)
 
 CUSTOM_CSS = """
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 <style>
+    :root {
+        --paper: #F7F8FA;
+        --surface: #FFFFFF;
+        --border: #E6E8EE;
+        --ink: #14181F;
+        --slate: #5B6472;
+        --cobalt: #2F5DE3;
+        --cobalt-soft: #EEF2FE;
+    }
+
+    html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
+
+    .stApp { background: var(--paper); }
+
+    /* Hide sidebar + its toggle on this page */
+    section[data-testid="stSidebar"] { display: none; }
+    button[data-testid="stSidebarCollapsedControl"] { display: none; }
+
     .block-container {
-        max-width: 480px;
-        padding-top: 4rem;
+    max-width: 460px;
+    padding-top: 4rem;
+}
+
+    /* ---- Brand mark + heading -------------------------------------- */
+    .signup-mark {
+        width: 44px; height: 44px;
+        border-radius: 12px;
+        background: var(--cobalt);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        margin: 0 auto 1rem auto;
     }
     .form-title {
         text-align: center;
-        font-size: 2rem;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 1.9rem;
         font-weight: 700;
+        color: var(--ink);
         margin-bottom: 0.25rem;
     }
     .form-subtitle {
         text-align: center;
-        color: #6b7280;
-        margin-bottom: 2rem;
+        color: var(--slate);
+        font-size: 0.95rem;
+        margin-bottom: 1.8rem;
     }
-    div.stButton > button {
+
+    /* ---- Card wrapper around the form -------------------------------- */
+    .st-key-signup_card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 1.8rem 1.8rem 0.8rem 1.8rem;
+        box-shadow: 0 2px 8px rgba(20, 24, 31, 0.05);
+        margin-bottom: 1.2rem;
+    }
+
+    /* ---- Field labels with icons -------------------------------------- */
+    .field-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--ink);
+        margin-bottom: 0.3rem;
+    }
+    .field-label i { color: var(--cobalt); width: 14px; }
+
+    /* ---- Inputs -------------------------------------------------------- */
+    div[data-testid="stTextInput"] input {
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: var(--paper);
+        padding: 0.55rem 0.75rem;
+        color: var(--ink);
+        -webkit-text-fill-color: var(--ink);
+    }
+    div[data-testid="stTextInput"] input:focus {
+        border-color: var(--cobalt);
+        box-shadow: 0 0 0 1px var(--cobalt);
+        background: var(--surface);
+        color: var(--ink);
+        -webkit-text-fill-color: var(--ink);
+    }
+    div[data-testid="stTextInput"] input::placeholder {
+        color: var(--slate);
+        opacity: 1;
+    }
+
+    /* ---- Primary (Sign Up) button — dark fill, cobalt hover ------------ */
+    div.stFormSubmitButton > button {
         width: 100%;
         padding: 0.6rem 0;
         border-radius: 8px;
         font-weight: 600;
         margin-top: 0.5rem;
+        background: #14181F;
+        color: #FFFFFF;
+        border: 1px solid #14181F;
+    }
+    div.stFormSubmitButton > button:hover {
+        background: var(--cobalt);
+        border-color: var(--cobalt);
+        color: #FFFFFF;
+    }
+    div.stFormSubmitButton > button p { color: #FFFFFF; }
+
+    /* ---- Secondary ("Already have an account?") — cobalt outline ------ */
+    .st-key-login_link button {
+        width: 100%;
+        padding: 0.6rem 0;
+        border-radius: 8px;
+        font-weight: 600;
+        margin-top: 0.5rem;
+        background: var(--surface);
+        color: var(--cobalt);
+        border: 1px solid var(--cobalt);
+    }
+    .st-key-login_link button:hover {
+        background: var(--cobalt-soft);
+        color: var(--cobalt);
+        border-color: var(--cobalt);
     }
 </style>
 """
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
+st.markdown('<div class="signup-mark"><i class="fa-solid fa-file-shield"></i></div>', unsafe_allow_html=True)
+
 st.markdown('<div class="form-title">Create Account</div>', unsafe_allow_html=True)
 
-with st.form("signup_form"):
-    username = st.text_input("Username", placeholder="Choose a username")
-    email = st.text_input("Email", placeholder="you@example.com")
-    password = st.text_input("Password", type="password", placeholder="Create a password")
-    confirm_password = st.text_input("Confirm Password", type="password", placeholder="Re-enter your password")
+st.markdown(
+    '<div class="form-subtitle">Sign up to start using AI Document Intelligence Assistant</div>',
+    unsafe_allow_html=True,
+)
 
-    submitted = st.form_submit_button("Sign Up", use_container_width=True)
+with st.container(key="signup_card"):
+
+    with st.form("signup_form"):
+
+        st.markdown('<div class="field-label"><i class="fa-solid fa-user"></i>Username</div>', unsafe_allow_html=True)
+        username = st.text_input(
+            "Username",
+            placeholder="Choose a username",
+            label_visibility="collapsed",
+        )
+
+        st.markdown('<div class="field-label"><i class="fa-solid fa-envelope"></i>Email</div>', unsafe_allow_html=True)
+        email = st.text_input(
+            "Email",
+            placeholder="you@example.com",
+            label_visibility="collapsed",
+        )
+
+        st.markdown('<div class="field-label"><i class="fa-solid fa-lock"></i>Password</div>', unsafe_allow_html=True)
+        password = st.text_input(
+            "Password",
+            type="password",
+            placeholder="Create a password",
+            label_visibility="collapsed",
+        )
+
+        st.markdown('<div class="field-label"><i class="fa-solid fa-lock"></i>Confirm Password</div>', unsafe_allow_html=True)
+        confirm_password = st.text_input(
+            "Confirm Password",
+            type="password",
+            placeholder="Re-enter your password",
+            label_visibility="collapsed",
+        )
+
+        submitted = st.form_submit_button("Sign Up", use_container_width=True)
+
+
+_, center, _ = st.columns([1, 2, 1])
+with center:
+    with st.container(key="login_link"):
+            if st.button("Already have an account? Login", use_container_width=True):
+                st.switch_page("pages/login.py")        
 
 if submitted:
     if not username or not email or not password or not confirm_password:
@@ -88,18 +209,14 @@ if submitted:
         db = SessionLocal()
         try:
             with st.spinner("Creating account..."):
-                AuthService.register_user(db, username, email, password)
+                 new_user = AuthService.register_user(db, username, email, password)
+            SessionManager.login(new_user)  
             st.success("Account created successfully!")
             time.sleep(1)
             st.switch_page("pages/dashboard.py")
         except Exception:
             st.error("Something went wrong. Please try again.")
         finally:
-            db.close()
+            db.close()            
 
 st.divider()
-
-_, center, _ = st.columns([1, 2, 1])
-with center:
-    if st.button("Already have an account? Login", use_container_width=True):
-        st.switch_page("pages/login.py")

@@ -25,7 +25,7 @@ class DocumentService:
             file_path = file_info["file_path"],
             file_size = file_info["file_size"],
             mime_type = file_info["mime_type"],
-            embedding_status = EmbeddingStatus.PENDING
+            embedding_status = EmbeddingStatus.UPLOADED
             )
         return document
     

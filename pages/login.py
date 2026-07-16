@@ -2,7 +2,7 @@ import streamlit as st
 
 from authentication.session_manager import SessionManager
 from database.database import SessionLocal
-from services.auth_service import AuthService
+from services.auth.auth_service import AuthService
 
 
 st.set_page_config(

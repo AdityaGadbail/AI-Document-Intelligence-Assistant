@@ -1,9 +1,10 @@
 import streamlit as st
+import textwrap
 
 from authentication.session_manager import SessionManager
 from database.database import SessionLocal
 from repositories.user_repository import UserRepository
-from services.document_service import DocumentService
+from services.document.document_service import DocumentService
 from utils.auth_guard import require_login
 
 require_login()
@@ -139,6 +140,13 @@ UPLOAD_CSS = """
         color: #FFFFFF;
     }
     div.stButton > button[kind="primary"] p { color: #FFFFFF; }
+
+
+    div[data-testid="stAlert"] [data-testid="stMarkdownContainer"],
+div[data-testid="stAlert"] p,
+div[data-testid="stAlert"] span {
+color: #14181F !important;
+}
 </style>
 """
 
@@ -216,14 +224,20 @@ if uploaded_file:
 
             st.success("Document uploaded successfully!")
 
-            st.info(
-                f"""
+            details = textwrap.dedent(f"""
             Filename: {document.original_filename}
 
             Status: {document.embedding_status}
 
-            Document ID: {document.id}""")
+            Document ID: {document.id}
+            
+            Uploaded : {document.upload_date}
 
+            """).strip()
+
+            st.info(details)    
+
+        
         except ValueError as e:
 
             st.error(str(e))

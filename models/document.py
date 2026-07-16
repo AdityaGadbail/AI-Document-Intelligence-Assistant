@@ -8,7 +8,7 @@ from sqlalchemy.orm import Mapped , mapped_column , relationship
 from database.base import Base
 
 class EmbeddingStatus(Enum):
-    PENDING = "PENDING"
+    UPLOADED = "UPLOADED"
     PROCESSING = "PROCESSING"
     READY = "READY"
     FAILED = "FAILED"
@@ -51,9 +51,11 @@ class Document(Base):
 
     embedding_status : Mapped[EmbeddingStatus] = mapped_column(
         SQLEnum(EmbeddingStatus),
-        default = EmbeddingStatus.PENDING,
+        default = EmbeddingStatus.UPLOADED,
         nullable = False
     )
+    
+
 
 
     upload_date: Mapped[datetime] = mapped_column(
