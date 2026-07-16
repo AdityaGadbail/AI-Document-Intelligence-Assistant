@@ -2,7 +2,7 @@ import streamlit as st
 
 from authentication.session_manager import SessionManager
 from database.database import SessionLocal
-from services.auth.auth_service import AuthService
+from services.auth_service import AuthService
 
 
 st.set_page_config(
@@ -95,6 +95,7 @@ CUSTOM_CSS = """
         background: var(--paper);
         padding: 0.55rem 0.75rem;
         color: var(--ink);
+        caret-color: var(--ink);
         -webkit-text-fill-color: var(--ink);
     }
     div[data-testid="stTextInput"] input:focus {
@@ -159,6 +160,18 @@ div[data-testid="stTextInput"] input:-webkit-autofill:active {
         color: var(--cobalt);
         border-color: var(--cobalt);
     }
+
+    div[data-testid="stAlert"] {
+    color: #14181F !important;
+    background-color: #F7F8FA !important;
+    border: 1px solid #E6E8EE !important;
+}
+
+div[data-testid="stAlert"] p,
+div[data-testid="stAlert"] span,
+div[data-testid="stAlert"] [data-testid="stMarkdownContainer"] {
+    color: #14181F !important;
+}
 </style>
 """
 

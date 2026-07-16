@@ -4,7 +4,7 @@ import textwrap
 from authentication.session_manager import SessionManager
 from database.database import SessionLocal
 from repositories.user_repository import UserRepository
-from services.document.document_service import DocumentService
+from services.document_service import DocumentService
 from utils.auth_guard import require_login
 
 require_login()
