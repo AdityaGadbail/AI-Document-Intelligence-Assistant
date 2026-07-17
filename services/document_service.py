@@ -5,10 +5,11 @@ from models.document import EmbeddingStatus
 from repositories.document_repository import DocumentRepository
 from storage.storage_service import StorageService
 from config.settings import MAX_UPLOAD_SIZE
+from config.settings import ALLOWED_EXTENSIONS
 
 class DocumentService:
 
-    ALLOWED_EXTENSIONS = {".pdf"}
+    # ALLOWED_EXTENSIONS = {".pdf"}
 
     # MAX_FILE_SIZE = 20 * 1024 * 1024
 
@@ -37,7 +38,7 @@ class DocumentService:
 
         extension = Path(uploaded_file.name).suffix.lower()
          
-        if extension not in cls.ALLOWED_EXTENSIONS:
+        if extension not in ALLOWED_EXTENSIONS:
             raise ValueError("Only PDF files are allowed.")
         
         if uploaded_file.size > MAX_UPLOAD_SIZE:

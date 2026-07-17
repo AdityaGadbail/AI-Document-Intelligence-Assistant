@@ -17,3 +17,8 @@ UPLOAD_DIRECTORY = os.getenv(
     "UPLOAD_DIRECTORY",
     "storage/uploads"
 )
+
+ALLOWED_EXTENSIONS = os.getenv(
+    "ALLOWED_EXTENSIONS",
+    [".pdf"]
+)

@@ -55,9 +55,6 @@ class Document(Base):
         nullable = False
     )
     
-
-
-
     upload_date: Mapped[datetime] = mapped_column(
         DateTime,
         default = datetime.utcnow
@@ -72,7 +69,22 @@ class Document(Base):
     mime_type: Mapped[str] = mapped_column(
     String(100),
     nullable=False
-)
+    )
+
+    page_count: Mapped[int | None] = mapped_column(
+        Integer,
+        nullable= True
+    )
+
+    word_count: Mapped[int | None] = mapped_column(
+        Integer,
+        nullable= True
+    )
+
+    character_count: Mapped[int | None] = mapped_column(
+        Integer,
+        nullable= True
+    )
 
 
     user = relationship("User",back_populates="documents")

@@ -50,4 +50,16 @@ class DocumentRepository:
                 Document.user_id == user_id,
                 Document.embedding_status == "READY"
             ).all()
-        )    
+        )  
+
+
+    @staticmethod
+    def update_document_statistics(db:Session,document:Document,extraction_result)->Document:
+        document.page_count = extraction_result.page_count  
+        document.word_count = extraction_result.word_count  
+        document.character_count = extraction_result.character_count  
+        db.commit()
+        db.refresh(document)
+
+        return document
+
