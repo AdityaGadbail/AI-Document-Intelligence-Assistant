@@ -22,3 +22,8 @@ ALLOWED_EXTENSIONS = os.getenv(
     "ALLOWED_EXTENSIONS",
     [".pdf"]
 )
+
+EMBEDDING_MODEL = os.getenv(
+    "EMBEDDING_MODEL",
+    "all-MiniLM-L6-v2"
+)
