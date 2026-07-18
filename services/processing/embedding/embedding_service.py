@@ -41,8 +41,4 @@ class EmbeddingService:
     
 
 
-embedding = EmbeddingService.generate_embedding(
-    "Machine learning is amazing."
-)
 
-print(len(embedding))

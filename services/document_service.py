@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from models.document import EmbeddingStatus
 from repositories.document_repository import DocumentRepository
 from storage.storage_service import StorageService
+from services.processing.pipeline.document_processor import DocumentProcessor
 from config.settings import MAX_UPLOAD_SIZE
 from config.settings import ALLOWED_EXTENSIONS
 
@@ -28,6 +29,8 @@ class DocumentService:
             mime_type = file_info["mime_type"],
             embedding_status = EmbeddingStatus.UPLOADED
             )
+        
+        DocumentProcessor.process(db=db,document=document)
         return document
     
 
