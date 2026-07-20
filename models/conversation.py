@@ -20,6 +20,11 @@ class Conversation(Base):
         nullable= False
     )
 
+    document_id: Mapped[int] = mapped_column(
+        ForeignKey("documents.id", ondelete="CASCADE"),
+        nullable=False
+    )
+
     title: Mapped[str] =  mapped_column(
         String(255),
         nullable= False
@@ -38,5 +43,8 @@ class Conversation(Base):
 
     # Relationship with User
     user = relationship("User",back_populates="conversations")
+    
+    document = relationship("Document",back_populates="conversations")
+
     # Relationship with Messages
     messages = relationship("Message",back_populates="conversation",cascade="all, delete-orphan")

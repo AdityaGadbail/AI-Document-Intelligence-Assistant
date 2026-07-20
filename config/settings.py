@@ -32,3 +32,9 @@ VECTOR_STORE_DIRECTORY = os.getenv(
     "VECTOR_STORE_DIRECTORY",
     "storage/vector_store"
 )
+
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+GEMINI_MODEL = os.getenv(
+    "GEMINI_MODEL",
+    "gemini-2.5-flash"
+)

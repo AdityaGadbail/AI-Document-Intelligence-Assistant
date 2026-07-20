@@ -88,4 +88,5 @@ class Document(Base):
 
 
     user = relationship("User",back_populates="documents")
+    conversations = relationship("Conversation",back_populates="document",cascade="all, delete-orphan")
 

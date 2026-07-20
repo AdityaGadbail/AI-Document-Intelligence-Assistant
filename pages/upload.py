@@ -142,10 +142,16 @@ UPLOAD_CSS = """
     div.stButton > button[kind="primary"] p { color: #FFFFFF; }
 
 
-    div[data-testid="stAlert"] [data-testid="stMarkdownContainer"],
-div[data-testid="stAlert"] p,
-div[data-testid="stAlert"] span {
-color: #14181F !important;
+    div[data-testid="stAlert"] {
+    color: #14181F !important;
+    background-color: #F7F8FA !important;
+    border: 1px solid #E6E8EE !important;
+    }
+
+   div[data-testid="stAlert"] p,
+div[data-testid="stAlert"] span,
+div[data-testid="stAlert"] [data-testid="stMarkdownContainer"] {
+    color: #14181F !important;
 }
 </style>
 """

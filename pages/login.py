@@ -165,7 +165,7 @@ div[data-testid="stTextInput"] input:-webkit-autofill:active {
     color: #14181F !important;
     background-color: #F7F8FA !important;
     border: 1px solid #E6E8EE !important;
-}
+    }
 
 div[data-testid="stAlert"] p,
 div[data-testid="stAlert"] span,
