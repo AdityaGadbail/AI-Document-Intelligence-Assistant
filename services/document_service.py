@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from models.document import EmbeddingStatus
 from repositories.document_repository import DocumentRepository
 from storage.storage_service import StorageService
-from services.processing.pipeline.document_processor import DocumentProcessor
+
 from config.settings import MAX_UPLOAD_SIZE
 from config.settings import ALLOWED_EXTENSIONS
 
@@ -13,10 +13,10 @@ class DocumentService:
     # ALLOWED_EXTENSIONS = {".pdf"}
 
     # MAX_FILE_SIZE = 20 * 1024 * 1024
-
     @classmethod
     def upload_document(cls,db:Session,uploaded_file,user_id:int):
-
+        from services.processing.pipeline.document_processor import DocumentProcessor
+        
         cls.validate_file(uploaded_file)
         file_info = StorageService.save_file(uploaded_file)
         document = DocumentRepository.create_document(
@@ -40,9 +40,23 @@ class DocumentService:
             raise ValueError("Please select a PDF file.")
 
         extension = Path(uploaded_file.name).suffix.lower()
-         
-        if extension not in ALLOWED_EXTENSIONS:
-            raise ValueError("Only PDF files are allowed.")
+        mime_type = getattr(uploaded_file, "type", "").lower()
+
+        allowed_extensions = {
+            ext.lower().strip()
+            for ext in ALLOWED_EXTENSIONS
+        }
+
+        if extension not in allowed_extensions and mime_type != "application/pdf":
+            raise ValueError(
+                f"Only PDF files are allowed. Got name='{uploaded_file.name}', "
+                f"extension='{extension}', type='{mime_type}'."
+            )
         
         if uploaded_file.size > MAX_UPLOAD_SIZE:
             raise ValueError("File size cannot exceed 20 MB.")
+        
+    @staticmethod
+    def get_user_documents(db:Session,user_id:int):
+
+        return DocumentRepository.get_by_user(db=db,user_id=user_id)    

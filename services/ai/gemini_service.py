@@ -11,7 +11,11 @@ class GeminiService:
     def get_model(cls):
         if cls._model is None:
 
-            genai.configure(GEMINI_API_KEY)
+            if not GEMINI_API_KEY:
+                raise ValueError(
+                "Gemini API key missing"
+            )
+            genai.configure(api_key=GEMINI_API_KEY)
             cls._model =  genai.GenerativeModel(GEMINI_MODEL)
 
             return cls._model

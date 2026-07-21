@@ -13,14 +13,10 @@ user = UserRepository.get_user_by_id(db, SessionManager.get_current_user_id())
 
 st.set_page_config(
     page_title="AI Document Intelligence Assistant",
-    page_icon="📄",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
 
-# ----------------------------------------------------------------------------
-# Design tokens & global styles
-# ----------------------------------------------------------------------------
 
 DASHBOARD_CSS = """
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -193,9 +189,6 @@ DASHBOARD_CSS = """
 
 st.markdown(DASHBOARD_CSS, unsafe_allow_html=True)
 
-# ----------------------------------------------------------------------------
-# 1. Header
-# ----------------------------------------------------------------------------
 header_left,header_right = st.columns(2)
 with header_left:
     st.markdown(
@@ -222,9 +215,6 @@ with header_right:
 
 st.markdown("<div style='border-bottom:1px solid #E6E8EE;margin-bottom:0.4rem;'></div>", unsafe_allow_html=True)
 
-# ----------------------------------------------------------------------------
-# 2. Statistics section
-# ----------------------------------------------------------------------------
 st.markdown('<div class="kicker"><span class="dot"></span>Overview</div>', unsafe_allow_html=True)
 
 document_count = 0
@@ -262,9 +252,6 @@ with stat_cols[3]:
         unsafe_allow_html=True,
     )
 
-# ----------------------------------------------------------------------------
-# 3. Quick actions (2x2 grid)
-# ----------------------------------------------------------------------------
 st.write("")
 st.markdown('<div class="kicker"><span class="dot"></span>Quick Actions</div>', unsafe_allow_html=True)
 
@@ -295,7 +282,7 @@ with row1col2:
         unsafe_allow_html=True,
     )
     if st.button("Open Documents", use_container_width=True, key="docs"):
-        st.switch_page("pages/documents.py")
+        st.switch_page("pages/my_document.py")
 
 with row2col1:
     st.markdown(
@@ -323,9 +310,6 @@ with row2col2:
     if st.button("Open Analytics", use_container_width=True, key="analytics"):
         st.switch_page("pages/analytics.py")
 
-# ----------------------------------------------------------------------------
-# 4. Recent activity
-# ----------------------------------------------------------------------------
 st.write("")
 st.markdown('<div class="kicker"><span class="dot"></span>Recent Activity</div>', unsafe_allow_html=True)
 

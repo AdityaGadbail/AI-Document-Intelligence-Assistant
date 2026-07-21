@@ -2,6 +2,7 @@ from pathlib import Path
 import faiss
 import numpy as np
 import json
+import shutil
 
 from config.settings import VECTOR_STORE_DIRECTORY
 
@@ -9,8 +10,7 @@ class VectoreStore:
 
     @staticmethod
     def save(document_id:int,embeddings:list[list[float]],chunks:list[str]):
-        document_directory =(
-             Path(VECTOR_STORE_DIRECTORY)/ f"doc_{document_id}")
+        document_directory =Path(VECTOR_STORE_DIRECTORY)/ f"doc_{document_id}"
         
         document_directory.mkdir(parents=True,exist_ok=True)
 
@@ -18,10 +18,10 @@ class VectoreStore:
 
         dimension = vectors.shape[1]
 
-        index = faiss.IndexFlatIp(dimension)
+        index = faiss.IndexFlatIP(dimension)
         index.add(vectors)
 
-        faiss.write_index(index,str(VECTOR_STORE_DIRECTORY / "index.faiss"))
+        faiss.write_index(index,str(document_directory / "index.faiss"))
 
         chunk_data = []
 
@@ -31,7 +31,7 @@ class VectoreStore:
                 "text": chunk
             })
 
-        with open(document_directory / "chunk.json","w",encoding="utf-8") as file:
+        with open(document_directory / "chunks.json","w",encoding="utf-8") as file:
             json.dump(chunk_data,file,indent=4,ensure_ascii=False)    
 
         metadata = {
@@ -40,13 +40,13 @@ class VectoreStore:
             "total_chunks" :len(chunks)
         }            
         
-        with open(document_directory / "metadata.josn","w",encoding="utf-8"):
+        with open(document_directory / "metadata.json", "w", encoding="utf-8") as file:
             json.dump(metadata,file,indent=4)
 
     @staticmethod
     def load(document_id:int):
 
-        directory = (Path(VECTOR_STORE_DIRECTORY) / f"doc_{document_id}")
+        directory = Path(VECTOR_STORE_DIRECTORY) / f"doc_{document_id}"
         return faiss.read_index(str(directory / "index.faiss"))
 
     # @staticmethod
@@ -59,9 +59,8 @@ class VectoreStore:
     #         return json.load(file)
     @staticmethod
     def load_chunk_data(document_id:int):
-        directory = (
-            Path(VECTOR_STORE_DIRECTORY) / f"doc_{document_id}"
-        )    
+        directory = Path(VECTOR_STORE_DIRECTORY) / f"doc_{document_id}"
+            
 
         with open(directory /"chunks.json","r",encoding="utf-8") as file:
             return json.load(file)
@@ -70,9 +69,8 @@ class VectoreStore:
     @staticmethod
     def search(document_id:int,query_embedding:list[float],top_k:int =5):
 
-        directory = (
-            Path(VECTOR_STORE_DIRECTORY / f"doc_{document_id}")
-            )
+        directory =Path(VECTOR_STORE_DIRECTORY) / f"doc_{document_id}"
+            
 
         index = faiss.read_index(
             str(directory / "index.faiss")
@@ -86,3 +84,11 @@ class VectoreStore:
         scores, indices = index.search(query,top_k) 
 
         return scores[0].tolist(),indices[0].tolist()
+    
+    @staticmethod
+    def delete(document_id:int):
+        directory = (Path(VECTOR_STORE_DIRECTORY)/ f"doc_{document_id}")
+
+        if directory.exists():
+
+            shutil.rmtree(directory)

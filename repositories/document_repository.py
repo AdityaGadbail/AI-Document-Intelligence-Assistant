@@ -19,8 +19,8 @@ class DocumentRepository:
         return (db.query(Document).filter(Document.id == document_id).first())
 
     @staticmethod
-    def get_documents_by_user(db:Session,user_id:int)->list[Document]:
-        return (db.query(Document).filter(Document.user_id == user_id).all())
+    def get_by_user(db:Session,user_id:int)->list[Document]:
+        return (db.query(Document).filter(Document.user_id == user_id).order_by(Document.upload_date.desc()).all())
 
     @staticmethod
     def delete_document(db:Session,document:Document):

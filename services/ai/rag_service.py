@@ -2,6 +2,8 @@
 from sqlalchemy.orm import Session
 
 from services.conversation_service import ConversationService
+from services.message_service import MessageService
+from models.message import MessageRole
 from services.ai.gemini_service import GeminiService
 from services.ai.retrieval_service import RetrievalService
 
@@ -17,12 +19,12 @@ class RagService:
         first_question=question
         )
 
-#         MessageService.create(
-#     db=db,
-#     conversation_id=conversation.id,
-#     role="user",
-#     content=question
-# )
+        MessageService.create(
+    db=db,
+    conversation_id=conversation.id,
+    role=MessageRole.USER,
+    content=question
+)
 
         chunks = RetrievalService.retrieve(document_id=document_id,question=question)
 
@@ -55,12 +57,12 @@ class RagService:
     
         answer = GeminiService.generate_answer(prompt)
 
-#         MessageService.create(
-#     db=db,
-#     conversation_id=conversation.id,
-#     role="assistant",
-#     content=answer
-# )
+        MessageService.create(
+    db=db,
+    conversation_id=conversation.id,
+    role=MessageRole.ASSISTANT,
+    content=answer
+)
 
         return {
     "conversation_id": conversation.id,

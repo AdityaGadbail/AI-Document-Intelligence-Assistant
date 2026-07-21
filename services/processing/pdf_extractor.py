@@ -3,7 +3,7 @@ from services.processing.dto.extraction_result import ExtractionResult
 
 class PDFExtractor:
 
-    @classmethod
+    @staticmethod
     def extract_pdf(pdf_path:str)-> ExtractionResult:
 
         document = fitz.open(pdf_path)

@@ -18,10 +18,17 @@ UPLOAD_DIRECTORY = os.getenv(
     "storage/uploads"
 )
 
-ALLOWED_EXTENSIONS = os.getenv(
-    "ALLOWED_EXTENSIONS",
-    [".pdf"]
-)
+# ALLOWED_EXTENSIONS = os.getenv(
+#     "ALLOWED_EXTENSIONS",
+#     [".pdf"]
+# )
+ALLOWED_EXTENSIONS = [
+    ext.strip().lower()
+    for ext in os.getenv("ALLOWED_EXTENSIONS", ".pdf").split(",")
+    if ext.strip()
+]
+
+
 
 EMBEDDING_MODEL = os.getenv(
     "EMBEDDING_MODEL",
@@ -34,7 +41,10 @@ VECTOR_STORE_DIRECTORY = os.getenv(
 )
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+
 GEMINI_MODEL = os.getenv(
     "GEMINI_MODEL",
     "gemini-2.5-flash"
 )
+
+print(GEMINI_API_KEY)
