@@ -1,9 +1,4 @@
 from sqlalchemy.orm import Session
-
-import models.document
-import models.conversation
-import models.message
-
 from models.user import User
 
 class UserRepository:

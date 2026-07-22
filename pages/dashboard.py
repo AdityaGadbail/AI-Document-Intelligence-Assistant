@@ -4,12 +4,14 @@ from utils.auth_guard import require_login
 from database.database import SessionLocal
 from authentication.session_manager import SessionManager
 from repositories.user_repository import UserRepository
+from services.analytics_service import AnalyticsService
 
 require_login()
 
 db = SessionLocal()
 
 user = UserRepository.get_user_by_id(db, SessionManager.get_current_user_id())
+stats = AnalyticsService.get_dashboard_statistics(db,user_id=user.id)
 
 st.set_page_config(
     page_title="AI Document Intelligence Assistant",
@@ -217,10 +219,10 @@ st.markdown("<div style='border-bottom:1px solid #E6E8EE;margin-bottom:0.4rem;'>
 
 st.markdown('<div class="kicker"><span class="dot"></span>Overview</div>', unsafe_allow_html=True)
 
-document_count = 0
-chat_count = 0
-message_count = 0
-storage_used = "0 MB"
+document_count = stats["documents"]
+chat_count = stats["conversations"]
+message_count = stats["messages"]
+storage_used = stats["storage"] 
 
 stat_cols = st.columns(4)
 
@@ -248,7 +250,7 @@ with stat_cols[2]:
 with stat_cols[3]:
     st.markdown(
         f"""<div class="metric-card"><div class="metric-title">Storage</div>
-        <div class="metric-value">{storage_used}</div></div>""",
+        <div class="metric-value">{storage_used} MB</div></div>""",
         unsafe_allow_html=True,
     )
 
