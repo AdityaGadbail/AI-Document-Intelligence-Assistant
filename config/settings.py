@@ -1,8 +1,9 @@
 import os
 from dotenv import load_dotenv
+from pathlib import Path
 
-load_dotenv()
-
+# load_dotenv()
+load_dotenv(Path(__file__).resolve().parent.parent / ".env", override=True)
 MAX_UPLOAD_SIZE = int(os.getenv("MAX_UPLOAD_SIZE",20971520))
 
 CHUNK_SIZE = int(
@@ -18,10 +19,6 @@ UPLOAD_DIRECTORY = os.getenv(
     "storage/uploads"
 )
 
-# ALLOWED_EXTENSIONS = os.getenv(
-#     "ALLOWED_EXTENSIONS",
-#     [".pdf"]
-# )
 ALLOWED_EXTENSIONS = [
     ext.strip().lower()
     for ext in os.getenv("ALLOWED_EXTENSIONS", ".pdf").split(",")
@@ -42,9 +39,8 @@ VECTOR_STORE_DIRECTORY = os.getenv(
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
+
 GEMINI_MODEL = os.getenv(
     "GEMINI_MODEL",
-    "gemini-2.5-flash"
+    "gemini-3.6-flash"
 )
-
-print(GEMINI_API_KEY)

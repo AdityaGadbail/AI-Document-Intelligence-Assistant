@@ -10,7 +10,6 @@ require_login()
 
 st.set_page_config(
     page_title="My Documents",
-    page_icon="📄",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -196,6 +195,34 @@ DOCS_CSS = """
         border-color: var(--cobalt);
         color: var(--cobalt);
     }
+
+
+
+
+
+
+
+    .delete-confirmation {
+    background: #FCEDEC;
+    color: #B42318;
+    border: 1px solid #F97066;
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    text-align: center;
+}
+
+.delete-confirmation .title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.delete-confirmation .subtitle {
+    font-size: 13px;
+    color: #7A271A;
+    font-weight: 400;
+}
 </style>
 """
 
@@ -263,15 +290,48 @@ for document in documents:
 
         with chat_col:
             with st.container(key=f"chat_wrap_{document.id}"):
-                if st.button("💬 Chat", key=f"chat_{document.id}", use_container_width=True):
+                if st.button("Chat", key=f"chat_{document.id}", use_container_width=True):
                     st.session_state.document_id = document.id
                     st.switch_page("pages/chat.py")
 
         with delete_col:
             with st.container(key=f"delete_wrap_{document.id}"):
-                if st.button("🗑 Delete", key=f"delete_{document.id}", use_container_width=True):
-                    st.session_state.delete_document = document.id
-
+                if st.button("Delete", key=f"delete_{document.id}", use_container_width=True):
+                    st.session_state.confirm_delete = document.id
+        if "confirm_delete" in st.session_state:
+            st.markdown("""<div class="delete-confirmation">
+            <div class="title">
+            Are you sure you want to delete this document?
+            </div>
+            <div class="subtitle">
+            This action is permanent and cannot be undone.
+            </div>
+            </div>""",unsafe_allow_html=True,)
+            
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                    if st.button(
+                        "Yes, Delete",
+                        use_container_width=True
+                    ):
+                        DocumentService.delete_document(
+                            db=db,
+                            document_id=st.session_state.confirm_delete,
+                            user_id=user.id
+                        )
+            
+                        del st.session_state.confirm_delete
+                        st.rerun()
+            
+            with col2:
+                    if st.button(
+                        "Cancel",
+                        use_container_width=True
+                    ):
+                        del st.session_state.confirm_delete
+                        st.rerun()
+                                             
 st.divider()
 
 with st.container(key="back_wrap"):

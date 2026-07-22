@@ -5,14 +5,13 @@ from models.document import EmbeddingStatus
 from repositories.document_repository import DocumentRepository
 from storage.storage_service import StorageService
 
+from services.processing.vectorstore.vector_store import VectoreStore
+
 from config.settings import MAX_UPLOAD_SIZE
 from config.settings import ALLOWED_EXTENSIONS
 
 class DocumentService:
 
-    # ALLOWED_EXTENSIONS = {".pdf"}
-
-    # MAX_FILE_SIZE = 20 * 1024 * 1024
     @classmethod
     def upload_document(cls,db:Session,uploaded_file,user_id:int):
         from services.processing.pipeline.document_processor import DocumentProcessor
@@ -59,4 +58,21 @@ class DocumentService:
     @staticmethod
     def get_user_documents(db:Session,user_id:int):
 
-        return DocumentRepository.get_by_user(db=db,user_id=user_id)    
+        return DocumentRepository.get_by_user(db=db,user_id=user_id) 
+
+    @staticmethod
+    def delete_document(db:Session,document_id: int,user_id: int):
+
+        document = DocumentRepository.get_document_by_id(db = db,document_id = document_id)
+
+        if document is None:
+            raise ValueError("Document not found.")
+        if document.user_id != user_id:
+            raise PermissionError("Unauthorized.")
+
+        StorageService.delete_file(document.file_path) 
+        VectoreStore.delete(document_id=document.id)  
+        DocumentRepository.delete_document(db=db,document=document)
+
+        
+        

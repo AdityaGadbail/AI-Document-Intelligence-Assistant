@@ -1,10 +1,10 @@
 
 import google.generativeai as genai
 
-from config.settings import (GEMINI_API_KEY,GEMINI_MODEL)
-
+from config.settings import (GEMINI_MODEL,GEMINI_API_KEY)
+print(GEMINI_API_KEY)
 class GeminiService:
-
+    
     _model = None
 
     @classmethod
@@ -18,7 +18,7 @@ class GeminiService:
             genai.configure(api_key=GEMINI_API_KEY)
             cls._model =  genai.GenerativeModel(GEMINI_MODEL)
 
-            return cls._model
+        return cls._model
 
     @classmethod
     def generate_answer(cls,prompt:str) -> str:            
