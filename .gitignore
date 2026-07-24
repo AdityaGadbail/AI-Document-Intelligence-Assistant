@@ -3,4 +3,6 @@ __pycache__/
 .env
 *.db
 *.sqlite3
-storage/
+storage/uploads/
+storage/vector_store/
+*.db

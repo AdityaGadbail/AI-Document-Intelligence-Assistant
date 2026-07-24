@@ -1,5 +1,10 @@
 import streamlit as st
 
+from models.user import User
+from models.document import Document
+from models.conversation import Conversation 
+from models.message import Message
+
 from authentication.session_manager import SessionManager
 from database.database import SessionLocal
 from services.auth_service import AuthService

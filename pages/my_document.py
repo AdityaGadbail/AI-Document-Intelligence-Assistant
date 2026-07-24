@@ -197,11 +197,6 @@ DOCS_CSS = """
     }
 
 
-
-
-
-
-
     .delete-confirmation {
     background: #FCEDEC;
     color: #B42318;

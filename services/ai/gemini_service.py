@@ -2,7 +2,6 @@
 import google.generativeai as genai
 
 from config.settings import (GEMINI_MODEL,GEMINI_API_KEY)
-print(GEMINI_API_KEY)
 class GeminiService:
     
     _model = None
