@@ -4,6 +4,7 @@ import time
 from database.database import SessionLocal
 from authentication.session_manager import SessionManager
 from services.auth_service import AuthService
+import models
 
 st.set_page_config(
     page_title="Create Account",
