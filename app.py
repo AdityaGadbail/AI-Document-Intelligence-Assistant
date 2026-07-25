@@ -1,6 +1,8 @@
 
 import streamlit as st
 
+from database.database import SessionLocal, init_db
+
 from authentication.session_manager import SessionManager
 from repositories.user_repository import UserRepository
 from database.database import SessionLocal
